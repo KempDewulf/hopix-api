@@ -13,7 +13,8 @@ class User extends Model
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
     ];
@@ -22,13 +23,11 @@ class User extends Model
         'is_admin',
         'password',
         'remember_token',
-        'email_verified_at',
         'created_at',
         'updated_at',
     ];
 
     protected $casts = [
-        'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
 
