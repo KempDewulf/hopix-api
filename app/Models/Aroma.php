@@ -10,6 +10,10 @@ class Aroma extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+    ];
+
     protected $hidden = [
         'created_at',
         'updated_at',
@@ -17,6 +21,6 @@ class Aroma extends Model
 
     public function beers(): BelongsToMany
     {
-        return $this->belongsToMany(Beer::class, 'beers_aromas', 'beer_id', 'aroma_id');
+        return $this->belongsToMany(Beer::class, 'beers_aromas.csv', 'beer_id', 'aroma_id');
     }
 }

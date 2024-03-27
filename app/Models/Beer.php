@@ -34,7 +34,7 @@ class Beer extends Model
 
     public function aromas(): BelongsToMany
     {
-        return $this->belongsToMany(Aroma::class, 'beers_aromas', 'aroma_id', 'beer_id');
+        return $this->belongsToMany(Aroma::class, 'beers_aromas.csv', 'aroma_id', 'beer_id');
     }
 
     public function reviews(): BelongsToMany

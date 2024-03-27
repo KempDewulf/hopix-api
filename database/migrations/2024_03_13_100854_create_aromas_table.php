@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('aromas', function (Blueprint $table) {
             $table->id();
+            $table->string("name");
             $table->timestamps();
         });
     }
