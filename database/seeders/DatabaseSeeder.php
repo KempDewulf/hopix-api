@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,8 +12,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        //make seeders for my db, not commented out
-
-
+        $this->call([
+            LanguageSeeder::class,
+            BrewerySeeder::class,
+            AromaSeeder::class,
+            BeerSeeder::class,
+            AromaLanguageSeeder::class,
+            UserSeeder::class,
+            BeerLanguageSeeder::class,
+        ]);
     }
 }

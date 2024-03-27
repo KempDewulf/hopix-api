@@ -12,7 +12,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('beer_id')->constrained('beers')->onDelete('cascade');
             $table->foreignId('aroma_id')->constrained('aromas')->onDelete('cascade');
-            $table->timestamps();
         });
     }
 

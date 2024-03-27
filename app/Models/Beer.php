@@ -11,7 +11,6 @@ class Beer extends Model
 {
     use HasFactory;
 
-
     protected $fillable = [
         'abv',
         'drinking_temp',
@@ -34,7 +33,7 @@ class Beer extends Model
 
     public function aromas(): BelongsToMany
     {
-        return $this->belongsToMany(Aroma::class, 'beers_aromas.csv', 'aroma_id', 'beer_id');
+        return $this->belongsToMany(Aroma::class, 'beers_aromas', 'beer_id', 'aroma_id');
     }
 
     public function reviews(): BelongsToMany
@@ -44,11 +43,11 @@ class Beer extends Model
 
     public function favorites(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'favorites', 'user_id', 'beer_id');
+        return $this->belongsToMany(User::class, 'favorites');
     }
 
     public function triedBeers(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'tried_beers', 'user_id', 'beer_id');
+        return $this->belongsToMany(User::class, 'tried_beers');
     }
 }

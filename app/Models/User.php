@@ -38,12 +38,12 @@ class User extends Model
 
     public function favorites(): BelongsToMany
     {
-        return $this->belongsToMany(Beer::class, 'favorites', 'beer_id', 'user_id');
+        return $this->belongsToMany(Beer::class, 'favorites');
     }
 
     public function triedBeers(): BelongsToMany
     {
-        return $this->belongsToMany(Beer::class, 'tried_beers', 'beer_id', 'user_id');
+        return $this->belongsToMany(Beer::class, 'tried_beers');
     }
 
     public function isAdmin(): bool
