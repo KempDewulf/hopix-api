@@ -39,9 +39,9 @@ abstract class Service
         return $this->errors;
     }
 
-    public function all()
+    public function all($pages)
     {
-        return $this->model->all();
+        return $this->model->paginate($pages)->withQueryString();
     }
 
     public function find($id)
