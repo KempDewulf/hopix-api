@@ -12,6 +12,8 @@ class Beer extends Model
     use HasFactory;
 
     protected $fillable = [
+        'name',
+        'style',
         'abv',
         'drinking_temp',
         'ibu',
