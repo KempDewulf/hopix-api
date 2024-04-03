@@ -10,6 +10,8 @@ return new class extends Migration
     {
         Schema::create('beers', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('style');
             $table->float('abv');
             $table->integer('drinking_temp');
             $table->integer('ibu');
