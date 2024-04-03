@@ -10,17 +10,18 @@ use Illuminate\Support\MessageBag;
 class BeerService extends Service
 {
     protected $rules = [
-        'name' => 'required',
+        'name' => 'required|string|max:255',
+        'style' => 'required|string|max:255',
+        'abv' => 'required|numeric|min:0',
+        'drinking_temp' => 'required|integer|min:0',
+        'ibu' => 'required|integer|min:0',
+        'brewery_id' => 'required|exists:breweries,id',
+        'amount_of_ratings' => 'integer|min:0',
+        'sum_ratings' => 'numeric|min:0',
     ];
 
-    public function validate($data)
+    public function __construct(Beer $model)
     {
-        $this->errors = new MessageBag();
-
-        $validator = Validator::make($data, $this->rules);
-
-        if ($validator->fails()) {
-            $this->errors = $validator->errors();
-        }
+        parent::__construct($model);
     }
 }
