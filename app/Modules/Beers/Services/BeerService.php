@@ -4,8 +4,6 @@ namespace App\Modules\Beers\Services;
 
 use App\Models\Beer;
 use App\Modules\Core\Services\Service;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\MessageBag;
 
 class BeerService extends Service
 {
