@@ -32,15 +32,6 @@ Route::post('/beers', [BeerController::class, 'create']);
 
 Route::put('/beers/{id}', [BeerController::class, 'update']);
 
-//BeerLanguages
-
-Route::get('/beerLanguages', [BeerLanguageController::class, 'all']);
-
-Route::get('/beerLanguages/{id}', [BeerLanguageController::class, 'find']);
-
-Route::post('/beerLanguages', [BeerLanguageController::class, 'create']);
-
-Route::put('/beerLanguages/{id}', [BeerLanguageController::class, 'update']);
 
 //Breweries
 
@@ -61,16 +52,6 @@ Route::get('/aromas/{id}', [AromaController::class, 'find']);
 Route::post('/aromas', [AromaController::class, 'create']);
 
 Route::put('/aromas/{id}', [AromaController::class, 'update']);
-
-//AromaLanguages
-
-Route::get('/aromaLanguages', [AromaLanguageController::class, 'all']);
-
-Route::get('/aromaLanguages/{id}', [AromaLanguageController::class, 'find']);
-
-Route::post('/aromaLanguages', [AromaLanguageController::class, 'create']);
-
-Route::put('/aromaLanguages/{id}', [AromaLanguageController::class, 'update']);
 
 //Languages
 
