@@ -20,8 +20,6 @@ class BeerLanguage extends Model
     protected $hidden = [
         'created_at',
         'updated_at',
-        'beer_id',
-        'language_id',
     ];
 
     public function beer(): BelongsTo
@@ -31,6 +29,6 @@ class BeerLanguage extends Model
 
     public function language(): BelongsTo
     {
-        return $this->belongsTo(Language::class);
+        return $this->belongsTo(Language::class, 'language_id');
     }
 }

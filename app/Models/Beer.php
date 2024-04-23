@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Beer extends Model
 {
@@ -51,5 +52,15 @@ class Beer extends Model
     public function triedBeers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'tried_beers');
+    }
+
+    public function languages(): HasMany
+    {
+        return $this->hasMany(BeerLanguage::class);
+    }
+
+    public function language(): HasMany
+    {
+        return $this->languages()->where('language_id', 1)->first();
     }
 }

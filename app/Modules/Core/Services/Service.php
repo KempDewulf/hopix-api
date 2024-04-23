@@ -3,6 +3,8 @@
 namespace App\Modules\Core\Services;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
 
@@ -29,6 +31,15 @@ abstract class Service
         }
     }
 
+    protected function setLocale(Request $request)
+    {
+        $locale = App::getLocale();
+        $language = $request->input('lang', $locale);
+        if ($language != $locale) {
+            App::setLocale($language);
+        }
+    }
+
     public function hasErrors()
     {
         return $this->errors->any();
@@ -39,18 +50,24 @@ abstract class Service
         return $this->errors;
     }
 
-    public function all($pages)
+    public function all($pages, Request $request)
     {
+        $this->setLocale($request);
+
         return $this->model->paginate($pages)->withQueryString();
     }
 
-    public function find($id)
+    public function find($id, Request $request)
     {
+        $this->setLocale($request);
+
         return $this->model->find($id);
     }
 
-    public function create($data)
+    public function create($data, Request $request)
     {
+        $this->setLocale($request);
+
         $this->validate($data);
         if ($this->hasErrors()) {
             return null;
@@ -59,8 +76,10 @@ abstract class Service
         return $this->model->create($data);
     }
 
-    public function update($id, $data)
+    public function update($id, $data, Request $request)
     {
+        $this->setLocale($request);
+
         $this->validate($data);
         if ($this->hasErrors()) {
             return null;
