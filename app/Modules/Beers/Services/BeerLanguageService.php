@@ -12,7 +12,7 @@ class BeerLanguageService extends Service
         'language_id' => 'required|exists:languages,id',
         'name' => 'required|string|max:255',
         'style' => 'required|string|max:255',
-        'description' => 'required|string',
+        'description' => 'required|text',
     ];
 
     public function __construct(BeerLanguage $model)

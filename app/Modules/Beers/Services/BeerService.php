@@ -16,7 +16,7 @@ class BeerService extends Service
         'abv' => 'required|numeric|min:0',
         'drinking_temp' => 'required|integer|min:0',
         'ibu' => 'required|integer|min:0',
-        'description' => 'required|string',
+        'description' => 'required|varchar',
         'brewery_id' => 'required|exists:breweries,id',
         'amount_of_ratings' => 'integer|min:0',
         'sum_ratings' => 'numeric|min:0',
