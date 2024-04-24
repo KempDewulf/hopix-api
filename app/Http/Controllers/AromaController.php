@@ -6,8 +6,10 @@ use App\Modules\Aromas\Services\AromaService;
 
 class AromaController extends Controller
 {
+    private AromaService $service;
+
     public function __construct(AromaService $aromaService)
     {
-        parent::__construct($aromaService);
+        $this->service = $aromaService;
     }
 }

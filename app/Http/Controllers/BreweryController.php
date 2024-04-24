@@ -6,8 +6,10 @@ use App\Modules\Breweries\Services\BreweryService;
 
 class BreweryController extends Controller
 {
+    private BreweryService $service;
+
     public function __construct(BreweryService $breweryService)
     {
-        parent::__construct($breweryService);
+        $this->service = $breweryService;
     }
 }

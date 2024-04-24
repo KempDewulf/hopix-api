@@ -6,8 +6,10 @@ use App\Modules\Aromas\Services\AromaLanguageService;
 
 class AromaLanguageController extends Controller
 {
+    private AromaLanguageService $service;
+
     public function __construct(AromaLanguageService $aromaLanguageService)
     {
-        parent::__construct($aromaLanguageService);
+        $this->service = $aromaLanguageService;
     }
 }

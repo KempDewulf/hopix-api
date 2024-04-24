@@ -6,8 +6,10 @@ use App\Modules\Beers\Services\BeerLanguageService;
 
 class BeerLanguageController extends Controller
 {
+    private BeerLanguageService $service;
+
     public function __construct(BeerLanguageService $beerLanguageService)
     {
-        parent::__construct($beerLanguageService);
+        $this->service = $beerLanguageService;
     }
 }

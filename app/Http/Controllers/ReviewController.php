@@ -6,8 +6,10 @@ use App\Modules\Reviews\Services\ReviewService;
 
 class ReviewController extends Controller
 {
+    private ReviewService $service;
+
     public function __construct(ReviewService $reviewService)
     {
-        parent::__construct($reviewService);
+        $this->service = $reviewService;
     }
 }

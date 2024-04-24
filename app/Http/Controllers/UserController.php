@@ -6,8 +6,10 @@ use App\Modules\Users\Services\UserService;
 
 class UserController extends Controller
 {
+    private UserService $service;
+
     public function __construct(UserService $userService)
     {
-        parent::__construct($userService);
+        $this->service = $userService;
     }
 }

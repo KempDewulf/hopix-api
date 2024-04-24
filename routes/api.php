@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post("register", [JwtAuthController::class, "register"]);
-Route::post("login", [JwtAuthController::class, "login"]);
+Route::post("login", [JwtAuthController::class, "login"])->name("login");
 
 Route::group([
     "middleware" => ["auth:api", "auth.csrf.jwt"]

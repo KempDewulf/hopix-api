@@ -9,8 +9,10 @@ use Illuminate\Support\Facades\App;
 
 class BeerController extends Controller
 {
+    private BeerService $service;
+
     public function __construct(BeerService $beerService)
     {
-        parent::__construct($beerService);
+        $this->service = $beerService;
     }
 }

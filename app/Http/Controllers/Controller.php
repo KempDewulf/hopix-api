@@ -10,13 +10,6 @@ use Illuminate\Support\Facades\App;
 
 class Controller extends BaseController
 {
-    protected $service;
-
-    public function __construct($service)
-    {
-        $this->service = $service;
-    }
-
     public function all(Request $request)
     {
         $pages = $request->input('pages', 10);

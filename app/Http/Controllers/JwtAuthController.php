@@ -13,10 +13,6 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class JwtAuthController extends Controller
 {
-    public function __construct()
-    {
-    }
-
     // User Register (POST, formdata)
     public function register(Request $request){
 
