@@ -89,43 +89,16 @@ class BeerService extends Service
     {
         $this->validate($data);
 
-        if (isset($data['aroma_ids'])) {
-            $validator = Validator::make($data, [
-                'aromaIds.*' => 'exists:aromas,id',
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json($validator->errors(), 400);
-            }
-        }
+        $this->validateAromaIds($data);
 
         DB::beginTransaction();
 
         try {
-            $beer = Beer::create([
-                'name' => $data['name'],
-                'style' => $data['style'],
-                'abv' => $data['abv'],
-                'drinking_temp' => $data['drinking_temp'],
-                'ibu' => $data['ibu'],
-                'description' => $data['description'],
-                'brewery_id' => $data['brewery_id'],
-            ]);
+            $beer = $this->createBeer($data);
 
-            if (isset($data['aroma_ids'])) {
-                foreach ($data['aroma_ids'] as $aromaId) {
-                    $beer->aromas()->attach($aromaId);
-                }
-            }
+            $this->attachAromasToBeer($data, $beer);
 
-            foreach ($data['languages'] as $languageData) {
-                $response = $this->beerLanguageService->createBeerLanguageForNewlyCreatedBeer($beer->id, $languageData);
-
-                if ($response instanceof JsonResponse) {
-                    DB::rollback();
-                    return $response;
-                }
-            }
+            $this->createBeerLanguages($data, $beer);
 
             DB::commit();
 
@@ -135,6 +108,57 @@ class BeerService extends Service
 
             throw $e;
         }
+    }
+
+    private function validateAromaIds($data)
+    {
+        if (isset($data['aroma_ids'])) {
+            $validator = Validator::make($data, [
+                'aroma_ids.*' => 'exists:aromas,id',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 400);
+            }
+        }
+
+        return true;
+    }
+
+    private function createBeer($data)
+    {
+        return Beer::create([
+            'name' => $data['name'],
+            'style' => $data['style'],
+            'abv' => $data['abv'],
+            'drinking_temp' => $data['drinking_temp'],
+            'ibu' => $data['ibu'],
+            'description' => $data['description'],
+            'brewery_id' => $data['brewery_id'],
+        ]);
+    }
+
+    private function attachAromasToBeer($data, $beer)
+    {
+        if (isset($data['aroma_ids'])) {
+            foreach ($data['aroma_ids'] as $aromaId) {
+                $beer->aromas()->attach($aromaId);
+            }
+        }
+    }
+
+    private function createBeerLanguages($data, $beer)
+    {
+        foreach ($data['languages'] as $languageData) {
+            $response = $this->beerLanguageService->createBeerLanguageForNewlyCreatedBeer($beer->id, $languageData);
+
+            if ($response instanceof JsonResponse) {
+                DB::rollback();
+                return $response;
+            }
+        }
+
+        return true;
     }
 }
 
