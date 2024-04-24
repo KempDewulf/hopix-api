@@ -1,3 +1,11 @@
 name,style,abv,drinking_temp,ibu,brewery_id,amount_of_ratings,sum_ratings
 Tripel Karmeliet,Tripel,8.4,8,16,1,0,0
-Cornet Oaked,Strong blonde,8.5,8,18,2,0,0
+Cornet Oaked,Strong blonde,8.5,8,25,2,0,0
+Westvleteren 12,Quadrupel,10.2,12,38,3,0,0
+Duvel,Strong blonde,8.5,8,33,4,0,0
+St. Bernardus Abt 12,Quadrupel,10.5,12,20,5,0,0
+La Chouffe,Blonde,8,8,20,6,0,0
+Orval,Trappist,6.2,8,36,7,0,0
+Chimay Blue, Trappist,9,12,35,8,0,0
+Rochefort 10,Quadrupel,11.3,12,27,9,0,0
+Stella Artois,pilsner,5.2,5,24,10,0,0

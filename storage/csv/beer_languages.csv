@@ -5,3 +5,27 @@ beer_id,language_id,name,style
 2,1,Cornet Oaked,Sterk blond
 2,2,Cornet Oaked,Blonde forte
 2,3,Cornet Oaked,Strong blonde
+3,1,Westvleteren 12,Quadrupel
+3,2,Westvleteren 12,Quadruple
+3,3,Westvleteren 12,Quadrupel
+4,1,Duvel,Sterk blond
+4,2,Duvel,Blonde forte
+4,3,Duvel,Strong blonde
+5,1,St. Bernardus Abt 12,Quadrupel
+5,2,St. Bernardus Abt 12,Quadruple
+5,3,St. Bernardus Abt 12,Quadrupel
+6,1,La Chouffe,Blond
+6,2,La Chouffe,Blonde
+6,3,La Chouffe,Blond
+7,1,Orval,Trappist
+7,2,Orval,Trappiste
+7,3,Orval,Trappist
+8,1,Chimay Blauw,Trappist
+8,2,Chimay Bleu,Trappiste
+8,3,Chimay Blue,Trappist
+9,1,Rochefort 10,Quadrupel
+9,2,Rochefort 10,Quadruple
+9,3,Rochefort 10,Quadrupel
+10,1,Stella Artois,Pils
+10,2,Stella Artois,Pils
+10,3,Stella Artois,Pils
