@@ -29,8 +29,6 @@ class BeerService extends Service
 
     public function all($pages, Request $request)
     {
-        parent::setLocale($request);
-
         $beers = $this->fetchBeersWithTranslations($this->model->query(), $request)
             ->paginate($pages)
             ->withQueryString();
@@ -44,8 +42,6 @@ class BeerService extends Service
 
     public function find($id, Request $request)
     {
-        parent::setLocale($request);
-
         $beer = $this->fetchBeersWithTranslations($this->model->query(), $request)
             ->find($id);
 

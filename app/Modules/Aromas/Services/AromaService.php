@@ -19,8 +19,6 @@ class AromaService extends Service
 
     public function all($pages, Request $request)
     {
-        parent::setLocale($request);
-
         $aromas = $this->fetchAromasWithTranslations($this->model->query(), $request)
             ->paginate($pages)
             ->withQueryString();
@@ -34,8 +32,6 @@ class AromaService extends Service
 
     public function find($id, Request $request)
     {
-        parent::setLocale($request);
-
         $aroma = $this->fetchAromasWithTranslations($this->model->query(), $request)
             ->find($id);
 
