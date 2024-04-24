@@ -3,9 +3,13 @@
 namespace App\Modules\Beers\Services;
 
 use App\Models\Beer;
+use App\Models\BeerLanguage;
 use App\Modules\Core\Services\Service;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
 
 class BeerService extends Service
@@ -16,15 +20,18 @@ class BeerService extends Service
         'abv' => 'required|numeric|min:0',
         'drinking_temp' => 'required|integer|min:0',
         'ibu' => 'required|integer|min:0',
-        'description' => 'required|varchar',
+        'description' => 'required|string',
         'brewery_id' => 'required|exists:breweries,id',
         'amount_of_ratings' => 'integer|min:0',
         'sum_ratings' => 'numeric|min:0',
     ];
 
-    public function __construct(Beer $model)
+    protected $beerLanguageService;
+
+    public function __construct(Beer $model, BeerLanguageService $beerLanguageService)
     {
         parent::__construct($model);
+        $this->beerLanguageService = $beerLanguageService;
     }
 
     public function all($pages, Request $request)
@@ -71,6 +78,63 @@ class BeerService extends Service
             unset($beer['languages']);
         }
         return $beer;
+    }
+
+    /**
+     * @param $data
+     * @param Request $request
+     * @throws \Exception
+     */
+    public function create($data, Request $request)
+    {
+        $this->validate($data);
+
+        if (isset($data['aroma_ids'])) {
+            $validator = Validator::make($data, [
+                'aromaIds.*' => 'exists:aromas,id',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 400);
+            }
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $beer = Beer::create([
+                'name' => $data['name'],
+                'style' => $data['style'],
+                'abv' => $data['abv'],
+                'drinking_temp' => $data['drinking_temp'],
+                'ibu' => $data['ibu'],
+                'description' => $data['description'],
+                'brewery_id' => $data['brewery_id'],
+            ]);
+
+            if (isset($data['aroma_ids'])) {
+                foreach ($data['aroma_ids'] as $aromaId) {
+                    $beer->aromas()->attach($aromaId);
+                }
+            }
+
+            foreach ($data['languages'] as $languageData) {
+                $response = $this->beerLanguageService->createBeerLanguageForNewlyCreatedBeer($beer->id, $languageData);
+
+                if ($response instanceof JsonResponse) {
+                    DB::rollback();
+                    return $response;
+                }
+            }
+
+            DB::commit();
+
+            return $beer;
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            throw $e;
+        }
     }
 }
 

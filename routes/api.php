@@ -24,69 +24,70 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-/** JWT Auth routes **/
-Route::post("register", [JwtAuthController::class, "register"]);
-Route::post("login", [JwtAuthController::class, "login"])->name("login");
+/** api routes **/
+Route::middleware('language')->group(function () {
+    /** JWT Auth routes **/
+    Route::post("register", [JwtAuthController::class, "register"]);
+    Route::post("login", [JwtAuthController::class, "login"])->name("login");
 
-/** authenticated routes **/
-Route::group([
-    "middleware" => ["auth:api", "auth.csrf.jwt"]
-], function(){
-
-    Route::get("profile", [JwtAuthController::class, "profile"]);
-    Route::get("refresh", [JwtAuthController::class, "refreshToken"]);
-    Route::get("logout", [JwtAuthController::class, "logout"]);
-
-    /**backoffice routes**/
+    /** authenticated routes **/
     Route::group([
-        "middleware" => ["isAdmin"]
+        "middleware" => ["auth:api", "auth.csrf.jwt"]
     ], function(){
 
-        //users
+        Route::get("profile", [JwtAuthController::class, "profile"]);
+        Route::get("refresh", [JwtAuthController::class, "refreshToken"]);
+        Route::get("logout", [JwtAuthController::class, "logout"]);
 
-        Route::get('/users', [UserController::class, 'all']);
+        /**backoffice routes**/
+        Route::group([
+            "middleware" => ["isAdmin"]
+        ], function(){
 
-        Route::get('/users/{id}', [UserController::class, 'find']);
+            //users
 
-        //beers
+            Route::get('/users', [UserController::class, 'all']);
 
-        Route::post('/beers', [BeerController::class, 'create']);
+            Route::get('/users/{id}', [UserController::class, 'find']);
 
-        Route::put('/beers/{id}', [BeerController::class, 'update']);
+            //beers
 
-        //breweries
+            Route::post('/beers', [BeerController::class, 'create']);
 
-        Route::post('/breweries', [BreweryController::class, 'create']);
+            Route::put('/beers/{id}', [BeerController::class, 'update']);
 
-        Route::put('/breweries/{id}', [BreweryController::class, 'update']);
+            //breweries
 
-        //aromas
+            Route::post('/breweries', [BreweryController::class, 'create']);
 
-        Route::post('/aromas', [AromaController::class, 'create']);
+            Route::put('/breweries/{id}', [BreweryController::class, 'update']);
 
-        Route::put('/aromas/{id}', [AromaController::class, 'update']);
+            //aromas
 
-        //languages
+            Route::post('/aromas', [AromaController::class, 'create']);
 
-        Route::post('/languages', [LanguageController::class, 'create']);
+            Route::put('/aromas/{id}', [AromaController::class, 'update']);
 
-        Route::put('/languages/{id}', [LanguageController::class, 'update']);
+            //languages
 
-        //reviews
+            Route::post('/languages', [LanguageController::class, 'create']);
 
-        Route::put('/reviews/{id}', [ReviewController::class, 'update']);
+            Route::put('/languages/{id}', [LanguageController::class, 'update']);
 
-        //users
+            //reviews
 
-        Route::post('/users', [UserController::class, 'create']);
+            Route::put('/reviews/{id}', [ReviewController::class, 'update']);
 
-        Route::put('/users/{id}', [UserController::class, 'update']);
+            //users
 
+            Route::post('/users', [UserController::class, 'create']);
+
+            Route::put('/users/{id}', [UserController::class, 'update']);
+
+        });
     });
-});
 
-/** Public routes **/
-Route::middleware('language')->group(function () {
+    /** Public routes **/
 
     //Beers
         Route::get('/beers', [BeerController::class, 'all']);
