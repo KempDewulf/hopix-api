@@ -6,7 +6,7 @@ use App\Modules\Aromas\Services\AromaLanguageService;
 
 class AromaLanguageController extends Controller
 {
-    private AromaLanguageService $service;
+    protected AromaLanguageService $service;
 
     public function __construct(AromaLanguageService $aromaLanguageService)
     {

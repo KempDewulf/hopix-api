@@ -23,9 +23,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+/** JWT Auth routes **/
 Route::post("register", [JwtAuthController::class, "register"]);
 Route::post("login", [JwtAuthController::class, "login"])->name("login");
 
+/** authenticated routes **/
 Route::group([
     "middleware" => ["auth:api", "auth.csrf.jwt"]
 ], function(){
@@ -33,19 +36,62 @@ Route::group([
     Route::get("profile", [JwtAuthController::class, "profile"]);
     Route::get("refresh", [JwtAuthController::class, "refreshToken"]);
     Route::get("logout", [JwtAuthController::class, "logout"]);
-});
 
+    /**backoffice routes**/
+    Route::group([
+        "middleware" => ["isAdmin"]
+    ], function(){
 
-Route::middleware('language')->group(function () {
-    //Beers
-        Route::get('/beers', [BeerController::class, 'all']);
+        //users
 
-        Route::get('/beers/{id}', [BeerController::class, 'find']);
+        Route::get('/users', [UserController::class, 'all']);
+
+        Route::get('/users/{id}', [UserController::class, 'find']);
+
+        //beers
 
         Route::post('/beers', [BeerController::class, 'create']);
 
         Route::put('/beers/{id}', [BeerController::class, 'update']);
 
+        //breweries
+
+        Route::post('/breweries', [BreweryController::class, 'create']);
+
+        Route::put('/breweries/{id}', [BreweryController::class, 'update']);
+
+        //aromas
+
+        Route::post('/aromas', [AromaController::class, 'create']);
+
+        Route::put('/aromas/{id}', [AromaController::class, 'update']);
+
+        //languages
+
+        Route::post('/languages', [LanguageController::class, 'create']);
+
+        Route::put('/languages/{id}', [LanguageController::class, 'update']);
+
+        //reviews
+
+        Route::put('/reviews/{id}', [ReviewController::class, 'update']);
+
+        //users
+
+        Route::post('/users', [UserController::class, 'create']);
+
+        Route::put('/users/{id}', [UserController::class, 'update']);
+
+    });
+});
+
+/** Public routes **/
+Route::middleware('language')->group(function () {
+
+    //Beers
+        Route::get('/beers', [BeerController::class, 'all']);
+
+        Route::get('/beers/{id}', [BeerController::class, 'find']);
 
     //Breweries
 
@@ -53,29 +99,17 @@ Route::middleware('language')->group(function () {
 
         Route::get('/breweries/{id}', [BreweryController::class, 'find']);
 
-        Route::post('/breweries', [BreweryController::class, 'create']);
-
-        Route::put('/breweries/{id}', [BreweryController::class, 'update']);
-
     //Aromas
 
         Route::get('/aromas', [AromaController::class, 'all']);
 
         Route::get('/aromas/{id}', [AromaController::class, 'find']);
 
-        Route::post('/aromas', [AromaController::class, 'create']);
-
-        Route::put('/aromas/{id}', [AromaController::class, 'update']);
-
     //Languages
 
         Route::get('/languages', [LanguageController::class, 'all']);
 
         Route::get('/languages/{id}', [LanguageController::class, 'find']);
-
-        Route::post('/languages', [LanguageController::class, 'create']);
-
-        Route::put('/languages/{id}', [LanguageController::class, 'update']);
 
     //Reviews
 
@@ -84,16 +118,4 @@ Route::middleware('language')->group(function () {
         Route::get('/reviews/{id}', [ReviewController::class, 'find']);
 
         Route::post('/reviews', [ReviewController::class, 'create']);
-
-        Route::put('/reviews/{id}', [ReviewController::class, 'update']);
-
-    //Users
-
-        Route::get('/users', [UserController::class, 'all']);
-
-        Route::get('/users/{id}', [UserController::class, 'find']);
-
-        Route::post('/users', [UserController::class, 'create']);
-
-        Route::put('/users/{id}', [UserController::class, 'update']);
 });

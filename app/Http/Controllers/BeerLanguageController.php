@@ -6,7 +6,7 @@ use App\Modules\Beers\Services\BeerLanguageService;
 
 class BeerLanguageController extends Controller
 {
-    private BeerLanguageService $service;
+    protected BeerLanguageService $service;
 
     public function __construct(BeerLanguageService $beerLanguageService)
     {

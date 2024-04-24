@@ -6,7 +6,7 @@ use App\Modules\Aromas\Services\AromaService;
 
 class AromaController extends Controller
 {
-    private AromaService $service;
+    protected AromaService $service;
 
     public function __construct(AromaService $aromaService)
     {

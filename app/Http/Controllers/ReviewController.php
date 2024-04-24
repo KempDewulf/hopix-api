@@ -6,7 +6,7 @@ use App\Modules\Reviews\Services\ReviewService;
 
 class ReviewController extends Controller
 {
-    private ReviewService $service;
+    protected ReviewService $service;
 
     public function __construct(ReviewService $reviewService)
     {

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\App;
 
 class BeerController extends Controller
 {
-    private BeerService $service;
+    protected BeerService $service;
 
     public function __construct(BeerService $beerService)
     {
