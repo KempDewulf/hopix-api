@@ -13,6 +13,7 @@ class BeerLanguage extends Model
     protected $fillable = [
         'name',
         'style',
+        'description',
         'beer_id',
         'language_id',
     ];

@@ -16,6 +16,7 @@ class BeerService extends Service
         'abv' => 'required|numeric|min:0',
         'drinking_temp' => 'required|integer|min:0',
         'ibu' => 'required|integer|min:0',
+        'description' => 'required|string',
         'brewery_id' => 'required|exists:breweries,id',
         'amount_of_ratings' => 'integer|min:0',
         'sum_ratings' => 'numeric|min:0',
@@ -70,6 +71,7 @@ class BeerService extends Service
             $translation = $translation->toArray();
             $beer['name'] = $translation['translated_name'];
             $beer['style'] = $translation['style'];
+            $beer['description'] = $translation['description'];
             unset($beer['languages']);
         }
         return $beer;

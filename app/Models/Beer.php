@@ -18,6 +18,7 @@ class Beer extends Model
         'abv',
         'drinking_temp',
         'ibu',
+        'description',
         'amount_of_ratings',
         'sum_ratings',
         'brewery_id',

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->float('abv');
             $table->integer('drinking_temp');
             $table->integer('ibu');
+            $table->string('description');
             $table->foreignId('brewery_id')->constrained('breweries')->onDelete('cascade');
             $table->integer('amount_of_ratings')->default(0);
             $table->double('sum_ratings')->default(0);
