@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Modules\Languages\Services\LanguageService;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -13,10 +11,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class JwtAuthController extends Controller
 {
-    // User Register (POST, formdata)
     public function register(Request $request){
-
-        // data validation
         $request->validate([
             "first_name" => "required",
             "last_name" => "required",
@@ -24,7 +19,6 @@ class JwtAuthController extends Controller
             "password" => "required"
         ]);
 
-        // User Model
         User::create([
             "first_name" => $request->first_name,
             "last_name" => $request->last_name,
@@ -32,33 +26,27 @@ class JwtAuthController extends Controller
             "password" => Hash::make($request->password)
         ]);
 
-        // Response
         return response()->json([
             "status" => true,
             "message" => "User registered successfully"
         ]);
     }
 
-    // User Login (POST, formdata)
     public function login(Request $request){
-
-        // data validation
         $request->validate([
             "email" => "required|email",
             "password" => "required"
         ]);
 
-        $csrfLength = env("CSRF_TOKEN_LENGTH");         // added token length
-        $csrfToken = Random::generate($csrfLength);     // added token generation
+        $csrfLength = env("CSRF_TOKEN_LENGTH");
+        $csrfToken = Random::generate($csrfLength);
 
-        // JWTAuth
-        $token = JWTAuth::claims(['X-XSRF-TOKEN' => $csrfToken])->attempt([  // added claims
+        $token = JWTAuth::claims(['X-XSRF-TOKEN' => $csrfToken])->attempt([
             "email" => $request->email,
             "password" => $request->password
         ]);
 
         if(empty($token)){
-
             return response()
                 ->json([
                     "status" => false,
@@ -66,19 +54,16 @@ class JwtAuthController extends Controller
                 ]);
         }
 
-        // add cookies
-        $ttl = env("JWT_COOKIE_TTL");   // added token expiry
-        $tokenCookie = cookie("token", $token, $ttl);  // added jwt token cookie
-        $csrfCookie = cookie("X-XSRF-TOKEN", $csrfToken, $ttl); // added csrf token cookie
+        $ttl = env("JWT_COOKIE_TTL");
+        $tokenCookie = cookie("token", $token, $ttl);
+        $csrfCookie = cookie("X-XSRF-TOKEN", $csrfToken, $ttl);
 
         return response(["message" => "User logged in succcessfully"])
-            ->withCookie($tokenCookie) // added cookies
-            ->withCookie($csrfCookie); // added cookies
+            ->withCookie($tokenCookie)
+            ->withCookie($csrfCookie);
     }
 
-    // User Profile (GET)
     public function profile(){
-
         $userdata = auth()->user();
 
         return response()->json([
@@ -88,28 +73,22 @@ class JwtAuthController extends Controller
         ]);
     }
 
-    // To generate refresh token value
     public function refreshToken(){
+        $csrfLength = env("CSRF_TOKEN_LENGTH");
+        $csrfToken = Random::generate($csrfLength);
 
-        $csrfLength = env("CSRF_TOKEN_LENGTH");         // added token length
-        $csrfToken = Random::generate($csrfLength);     // added token generation
+        $token = JWTAuth::claims(['X-XSRF-TOKEN' => $csrfToken])->refresh();
 
-        $token = JWTAuth::claims(['X-XSRF-TOKEN' => $csrfToken])->refresh(); // added claim
-
-
-
-        $ttl = env("JWT_COOKIE_TTL");   // added token expiry
-        $tokenCookie = cookie("token", $token, $ttl);  // added jwt token cookie
-        $csrfCookie = cookie("X-XSRF-TOKEN", $csrfToken, $ttl); // added csrf token cookie
+        $ttl = env("JWT_COOKIE_TTL");
+        $tokenCookie = cookie("token", $token, $ttl);
+        $csrfCookie = cookie("X-XSRF-TOKEN", $csrfToken, $ttl);
 
         return response(["message" => "Token refresh succcessfully"])
-            ->withCookie($tokenCookie) // added cookies
-            ->withCookie($csrfCookie); // added cookies
+            ->withCookie($tokenCookie)
+            ->withCookie($csrfCookie);
     }
 
-    // User Logout (GET)
     public function logout(){
-
         auth()->logout();
 
         return response()->json([
