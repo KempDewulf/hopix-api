@@ -27,7 +27,7 @@ class Review extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Review::class);
     }
 
     public function beer(): BelongsTo
