@@ -12,9 +12,9 @@ class Controller extends BaseController
 {
     public function all(Request $request)
     {
-        $pages = $request->input('pages', 10);
+        $perPage = $request->input('per_page', 10);
 
-        return $this->service->all($pages, $request);
+        return $this->service->all($perPage, $request);
     }
 
     public function find(Request $request, $id)

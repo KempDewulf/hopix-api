@@ -34,10 +34,10 @@ class BeerService extends Service
         $this->beerLanguageService = $beerLanguageService;
     }
 
-    public function all($pages, Request $request)
+    public function all($perPage, Request $request)
     {
         $beers = $this->fetchBeersWithTranslations($this->model->query(), $request)
-            ->paginate($pages)
+            ->paginate($perPage)
             ->withQueryString();
 
         $beers->setCollection($beers->getCollection()->map(function ($beer) {

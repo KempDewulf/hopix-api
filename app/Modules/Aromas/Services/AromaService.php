@@ -17,15 +17,14 @@ class AromaService extends Service
         parent::__construct($model);
     }
 
-    public function all($pages, Request $request)
+    public function all($perPage, Request $request)
     {
         $aromas = $this->fetchAromasWithTranslations($this->model->query(), $request)
-            ->paginate($pages)
-            ->withQueryString();
+            ->get();
 
-        $aromas->setCollection($aromas->getCollection()->map(function ($aroma) {
+        $aromas = $aromas->map(function ($aroma) {
             return $this->translateAromaFields($aroma);
-        }));
+        });
 
         return $aromas;
     }
