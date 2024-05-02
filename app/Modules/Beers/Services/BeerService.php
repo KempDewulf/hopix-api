@@ -36,13 +36,50 @@ class BeerService extends Service
 
     public function all($perPage, Request $request)
     {
-        $beers = $this->fetchBeersWithTranslations($this->model->query(), $request)
-            ->paginate($perPage)
-            ->withQueryString();
+        $beers = $this->fetchBeersWithTranslations($this->model->query(), $request);
+
+        $beers = $this->filterByAromas($beers, $request->input('aroma_ids', []));
+        $beers = $this->filterByBreweries($beers, $request->input('brewery_ids', []));
+        $beers = $this->sortBeers($beers, $request->input('sort_order', 'name'));
+
+        $beers = $beers->paginate($perPage)->withQueryString();
 
         $beers->setCollection($beers->getCollection()->map(function ($beer) {
             return $this->translateBeerFields($beer);
         }));
+
+        return $beers;
+    }
+
+    private function filterByAromas($beers, $aromaIds)
+    {
+        if (!empty($aromaIds)) {
+            $aromaIds = is_array($aromaIds) ? $aromaIds : explode(',', $aromaIds);
+            $beers = $beers->whereHas('aromas', function ($query) use ($aromaIds) {
+                $query->whereIn('aroma_id', $aromaIds);
+            });
+        }
+
+        return $beers;
+    }
+
+    private function filterByBreweries($beers, $breweryIds)
+    {
+        if (!empty($breweryIds)) {
+            $breweryIds = is_array($breweryIds) ? $breweryIds : explode(',', $breweryIds);
+            $beers = $beers->whereIn('brewery_id', $breweryIds);
+        }
+
+        return $beers;
+    }
+
+    private function sortBeers($beers, $sortOrder)
+    {
+        if ($sortOrder === 'name') {
+            $beers = $beers->orderBy('name', 'asc');
+        } elseif ($sortOrder === 'amount_of_ratings') {
+            $beers = $beers->orderBy('amount_of_ratings', 'desc');
+        }
 
         return $beers;
     }
