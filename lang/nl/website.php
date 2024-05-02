@@ -27,7 +27,13 @@ return [
     'rating' => 'reviews',
     'ratings' => 'reviews',
 
+    'rating_dropdown' => 'score',
+    'name' => 'Naam',
+
     'brewery' => 'Brouwerij',
     'aroma' => 'Aroma',
+
+    'sort_by' => 'Sorteer op',
+    'sort' => 'Sorteer',
 
 ];

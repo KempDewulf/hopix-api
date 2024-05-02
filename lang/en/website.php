@@ -27,7 +27,12 @@ return [
     'rating' => 'Rating',
     'ratings' => 'Ratings',
 
+    'rating_dropdown' => 'Rating',
+    'name' => 'Name',
+
     'brewery' => 'Brewery',
     'aroma' => 'Aroma',
 
+    'sort_by' => 'Sort by',
+    'sort' => 'Sort',
 ];
