@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             AromaLanguageSeeder::class,
             UserSeeder::class,
             BeerLanguageSeeder::class,
+            BeersAromasSeeder::class,
         ]);
     }
 }

@@ -2,23 +2,20 @@
 
 namespace Database\Seeders;
 
-use App\Models\Beer;
-use App\Models\Aroma;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
-class BeerSeeder extends Seeder
+class BeersAromasSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $data = $this->getDataFromCsv(storage_path('csv/beers.csv'));
+        $data = $this->getDataFromCsv(storage_path('csv/beers_aromas.csv'));
 
-        $model = new Beer();
         foreach ($data as $row) {
-            $model->create($row);
+            DB::table('beers_aromas')->insert($row);
         }
     }
 
@@ -34,5 +31,4 @@ class BeerSeeder extends Seeder
         fclose($file);
         return $data;
     }
-
 }

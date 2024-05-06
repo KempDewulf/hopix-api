@@ -56,9 +56,14 @@ class BeerService extends Service
         if (!empty($aromaIds)) {
             $aromaIds = is_array($aromaIds) ? $aromaIds : explode(',', $aromaIds);
             $beers = $beers->whereHas('aromas', function ($query) use ($aromaIds) {
-                $query->whereIn('aroma_id', $aromaIds);
+                $query->whereIn('aromas.id', $aromaIds);
             });
+
+            // Log the SQL query
+            Log::info('SQL query: ' . $beers->toSql());
+            Log::info('SQL query parameters: ' . implode(', ', $beers->getBindings()));
         }
+
 
         return $beers;
     }
