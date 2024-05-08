@@ -36,4 +36,11 @@ class BeerController extends Controller
             "data" => $this->service->reviews($id, $request)
         ];
     }
+
+    public function brewery(Request $request, $id)
+    {
+        return [
+            "data" => $this->service->brewery($id, $request)
+        ];
+    }
 }

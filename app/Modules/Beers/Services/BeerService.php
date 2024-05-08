@@ -244,6 +244,20 @@ class BeerService extends Service
 
         return $beer->reviews()->with('user')->orderBy('created_at', 'desc')->get();
     }
+
+    public function brewery($id, Request $request)
+    {
+        // Find the beer with the given id
+        $beer = $this->model->find($id);
+
+        // If the beer doesn't exist, return an error response
+        if (!$beer) {
+            return response()->json(['error' => 'Beer not found'], 404);
+        }
+
+        // Return the brewery associated with the beer
+        return $beer->brewery;
+    }
 }
 
 

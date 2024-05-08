@@ -103,6 +103,8 @@ Route::middleware('language')->group(function () {
 
         Route::get('/beers/{id}/reviews', [BeerController::class, 'reviews']);
 
+        Route::get('/beers/{id}/brewery', [BeerController::class, 'brewery']);
+
     //Breweries
 
         Route::get('/breweries', [BreweryController::class, 'all']);
