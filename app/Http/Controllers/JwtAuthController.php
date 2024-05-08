@@ -58,7 +58,10 @@ class JwtAuthController extends Controller
         $tokenCookie = cookie("token", $token, $ttl);
         $csrfCookie = cookie("X-XSRF-TOKEN", $csrfToken, $ttl);
 
-        return response(["message" => "User logged in succcessfully"])
+        return response([
+            "status" => true,
+            "message" => "User logged in succcessfully"
+        ])
             ->withCookie($tokenCookie)
             ->withCookie($csrfCookie);
     }
@@ -70,6 +73,18 @@ class JwtAuthController extends Controller
             "status" => true,
             "message" => "Profile data",
             "data" => $userdata
+        ]);
+    }
+
+    public function isLoggedIn(){
+        return response()->json([
+            "status" => true,
+        ]);
+    }
+
+    public function isAdmin(Request $request){
+        return response()->json([
+            "status" => true,
         ]);
     }
 

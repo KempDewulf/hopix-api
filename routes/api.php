@@ -39,6 +39,8 @@ Route::middleware('language')->group(function () {
         Route::get("profile", [JwtAuthController::class, "profile"]);
         Route::get("refresh", [JwtAuthController::class, "refreshToken"]);
         Route::get("logout", [JwtAuthController::class, "logout"]);
+        Route::get("logged-in", [JwtAuthController::class, 'isLoggedIn']);
+
 
         Route::post('/beers/{id}/reviews', [ReviewController::class, 'createForBeer']);
 
@@ -46,6 +48,8 @@ Route::middleware('language')->group(function () {
         Route::group([
             "middleware" => ["isAdmin"]
         ], function(){
+
+            Route::get('/is-admin', [JwtAuthController::class, 'isAdmin']);
 
             //users
 
