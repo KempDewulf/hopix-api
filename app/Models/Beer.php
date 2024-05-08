@@ -40,9 +40,9 @@ class Beer extends Model
         return $this->belongsToMany(Aroma::class, 'beers_aromas', 'beer_id', 'aroma_id');
     }
 
-    public function reviews(): BelongsToMany
+    public function reviews(): HasMany
     {
-        return $this->belongsToMany(Review::class, 'reviews');
+        return $this->hasMany(Review::class);
     }
 
     public function favorites(): BelongsToMany

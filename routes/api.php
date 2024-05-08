@@ -40,6 +40,8 @@ Route::middleware('language')->group(function () {
         Route::get("refresh", [JwtAuthController::class, "refreshToken"]);
         Route::get("logout", [JwtAuthController::class, "logout"]);
 
+        Route::post('/beers/{id}/reviews', [ReviewController::class, 'createForBeer']);
+
         /**backoffice routes**/
         Route::group([
             "middleware" => ["isAdmin"]
@@ -96,6 +98,10 @@ Route::middleware('language')->group(function () {
         Route::get('/beers/{id}', [BeerController::class, 'find'])->where('id', '[0-9]+');
 
         Route::get('/beers/{name}', [BeerController::class, 'findByName'])->where('name', '[a-zA-Z-]+');
+
+        Route::get('/beers/{id}/aromas', [BeerController::class, 'aromas']);
+
+        Route::get('/beers/{id}/reviews', [BeerController::class, 'reviews']);
 
     //Breweries
 

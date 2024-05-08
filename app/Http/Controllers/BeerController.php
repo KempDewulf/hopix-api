@@ -22,4 +22,18 @@ class BeerController extends Controller
             "data" => $this->service->findByName($name, $request)
         ];
     }
+
+    public function aromas(Request $request, $id)
+    {
+        return [
+            "data" => $this->service->aromas($id, $request)
+        ];
+    }
+
+    public function reviews(Request $request, $id)
+    {
+        return [
+            "data" => $this->service->reviews($id, $request)
+        ];
+    }
 }

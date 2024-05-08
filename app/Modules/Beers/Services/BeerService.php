@@ -222,6 +222,31 @@ class BeerService extends Service
 
         return true;
     }
+
+    public function aromas($id, Request $request)
+    {
+        $beer = $this->model->find($id);
+
+        if (!$beer) {
+            return response()->json(['error' => 'Beer not found'], 404);
+        }
+
+        return $beer->aromas;
+    }
+
+    public function reviews($id, Request $request)
+    {
+        $beer = $this->model->find($id);
+
+        if (!$beer) {
+            return response()->json(['error' => 'Beer not found'], 404);
+        }
+
+        // Eager load the user relationship
+        $reviews = $beer->reviews()->with('user')->get();
+
+        return $reviews;
+    }
 }
 
 
