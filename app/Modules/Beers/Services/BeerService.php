@@ -242,7 +242,7 @@ class BeerService extends Service
             return response()->json(['error' => 'Beer not found'], 404);
         }
 
-        return $beer->reviews()->with('user')->get();
+        return $beer->reviews()->with('user')->orderBy('created_at', 'desc')->get();
     }
 }
 
