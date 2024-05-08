@@ -15,4 +15,11 @@ class BeerController extends Controller
     {
         $this->service = $beerService;
     }
+
+    public function findByName(Request $request, $name)
+    {
+        return [
+            "data" => $this->service->findByName($name, $request)
+        ];
+    }
 }

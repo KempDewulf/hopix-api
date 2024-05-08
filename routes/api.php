@@ -93,7 +93,9 @@ Route::middleware('language')->group(function () {
     //Beers
         Route::get('/beers', [BeerController::class, 'all']);
 
-        Route::get('/beers/{id}', [BeerController::class, 'find']);
+        Route::get('/beers/{id}', [BeerController::class, 'find'])->where('id', '[0-9]+');
+
+        Route::get('/beers/{name}', [BeerController::class, 'findByName'])->where('name', '[a-zA-Z-]+');
 
     //Breweries
 

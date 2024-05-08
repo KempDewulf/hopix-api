@@ -97,9 +97,29 @@ class BeerService extends Service
         return $this->translateBeerFields($beer);
     }
 
+    public function findByName($name, Request $request)
+    {
+        $name = str_replace('-', ' ', $name);
+        $language = $request->input('lang', 'en');
+
+        $beer = $this->model->whereHas('languages', function ($query) use ($name, $language) {
+            $query->where('name', $name)
+                ->whereHas('language', function ($query) use ($language) {
+                    $query->where('code', $language);
+                });
+        })->first();
+        if ($beer == null) {
+            $beer = $this->fetchBeersWithTranslations($this->model->query(), $request)
+                ->where('name', $name)
+                ->first();
+        }
+
+        return $this->find($beer->id, $request);
+    }
+
     private function fetchBeersWithTranslations($query, Request $request)
     {
-        $language = $request->input('lang', 'US_EN');
+        $language = $request->input('lang', 'en');
 
         return $query->with(['languages' => function ($query) use ($language) {
             $query->join('languages', 'languages.id', '=', 'beer_languages.language_id')
