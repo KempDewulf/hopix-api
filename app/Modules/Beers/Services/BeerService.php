@@ -242,10 +242,7 @@ class BeerService extends Service
             return response()->json(['error' => 'Beer not found'], 404);
         }
 
-        // Eager load the user relationship
-        $reviews = $beer->reviews()->with('user')->get();
-
-        return $reviews;
+        return $beer->reviews()->with('user')->get();
     }
 }
 
