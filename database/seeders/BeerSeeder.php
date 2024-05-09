@@ -3,8 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Beer;
-use App\Models\Aroma;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class BeerSeeder extends Seeder
