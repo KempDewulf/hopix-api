@@ -39,6 +39,11 @@ class BeerService extends Service
     {
         $beers = $this->fetchBeersWithTranslations($this->model->query(), $request);
 
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $beers = $beers->where('name', 'like', "%{$search}%");
+        }
+
         $beers = $this->filterByAromas($beers, $request->input('aroma_ids', []));
         $beers = $this->filterByBreweries($beers, $request->input('brewery_ids', []));
         $beers = $this->sortBeers($beers, $request->input('sort_order', 'name'));
