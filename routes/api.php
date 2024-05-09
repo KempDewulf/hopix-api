@@ -63,6 +63,8 @@ Route::middleware('language')->group(function () {
 
             Route::put('/beers/{id}', [BeerController::class, 'update']);
 
+            Route::delete('/beers/{id}', [BeerController::class, 'delete']);
+
             //breweries
 
             Route::post('/breweries', [BreweryController::class, 'create']);

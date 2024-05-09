@@ -43,4 +43,11 @@ class BeerController extends Controller
             "data" => $this->service->brewery($id, $request)
         ];
     }
+
+    public function delete(Request $request, $id)
+    {
+        return [
+            "data" => $this->service->delete($id, $request)
+        ];
+    }
 }

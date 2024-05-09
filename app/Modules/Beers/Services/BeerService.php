@@ -7,6 +7,7 @@ use App\Models\BeerLanguage;
 use App\Modules\Core\Services\Service;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -84,6 +85,8 @@ class BeerService extends Service
             $beers = $beers->orderBy('name', 'asc');
         } elseif ($sortOrder === 'amount_of_ratings') {
             $beers = $beers->orderBy('amount_of_ratings', 'desc');
+        } elseif ($sortOrder === 'id') {
+            $beers = $beers->orderBy('id', 'desc');
         }
 
         return $beers;
@@ -91,10 +94,36 @@ class BeerService extends Service
 
     public function find($id, Request $request)
     {
-        $beer = $this->fetchBeersWithTranslations($this->model->query(), $request)
-            ->find($id);
+        $beer = $this->model->find($id);
 
-        return $this->translateBeerFields($beer);
+        if (!$beer) {
+            return response()->json(['error' => 'Beer not found'], 404);
+        }
+
+        if ($request->has('withlanguages')) {
+            $beer->load('languages');
+            $locale = App::getLocale();
+            $translation = $beer->languages->where('language.code', $locale)->first();
+
+            if ($translation) {
+                $beer->name = $translation->translated_name;
+                $beer->style = $translation->style;
+                $beer->description = $translation->description;
+            }
+
+            $beer['aroma_ids'] = $beer->aromas()->pluck('aromas.id')->toArray();
+            $beer->makeVisible('brewery_id');
+        } else {
+            $beer = $this->fetchBeersWithTranslations($this->model->query(), $request)
+                ->where('id', $id)
+                ->first();
+
+            if ($beer) {
+                $beer = $this->translateBeerFields($beer);
+            }
+        }
+
+        return $beer;
     }
 
     public function findByName($name, Request $request)
@@ -161,6 +190,65 @@ class BeerService extends Service
             $this->attachAromasToBeer($data, $beer);
 
             $this->createBeerLanguages($data, $beer);
+
+            DB::commit();
+
+            return $beer;
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            throw $e;
+        }
+    }
+
+    public function update($id, $data, Request $request)
+    {
+        $this->validate($data);
+
+        $this->validateAromaIds($data);
+
+        DB::beginTransaction();
+
+        try {
+            $beer = $this->model->find($id);
+
+            if (!$beer) {
+                return response()->json(['error' => 'Beer not found'], 404);
+            }
+
+            $beer->update([
+                'name' => $data['name'],
+                'style' => $data['style'],
+                'abv' => $data['abv'],
+                'drinking_temp' => $data['drinking_temp'],
+                'ibu' => $data['ibu'],
+                'description' => $data['description'],
+                'brewery_id' => $data['brewery_id'],
+            ]);
+
+            $beer->aromas()->detach();
+
+            if (isset($data['aroma_ids'])) {
+                foreach ($data['aroma_ids'] as $aromaId) {
+                    $beer->aromas()->attach($aromaId);
+                }
+            }
+
+            foreach ($data['languages'] as $languageData) {
+                $beerLanguage = BeerLanguage::where('beer_id', $beer->id)
+                    ->where('language_id', $languageData['language_id'])
+                    ->first();
+
+                if ($beerLanguage) {
+                    $beerLanguage->update([
+                        'name' => $languageData['name'],
+                        'style' => $languageData['style'],
+                        'description' => $languageData['description'],
+                    ]);
+                } else {
+                    $this->beerLanguageService->createBeerLanguageForNewlyCreatedBeer($beer->id, $languageData);
+                }
+            }
 
             DB::commit();
 
@@ -254,6 +342,26 @@ class BeerService extends Service
         }
 
         return $beer->brewery;
+    }
+
+    public function delete($id)
+    {
+        $beer = $this->model->find($id);
+
+        if (!$beer) {
+            return response()->json(['error' => 'Beer not found'], 404);
+        }
+
+        // Detach related aromas
+        $beer->aromas()->detach();
+
+        // Delete related beer languages
+        $beer->languages()->delete();
+
+        // Delete the beer itself
+        $beer->delete();
+
+        return response()->json(['message' => 'Beer deleted successfully'], 200);
     }
 }
 
