@@ -110,7 +110,7 @@ class BeerService extends Service
             $translation = $beer->languages->where('language.code', $locale)->first();
 
             if ($translation) {
-                $beer->name = $translation->translated_name;
+                $beer->name = $translation->name;
                 $beer->style = $translation->style;
                 $beer->description = $translation->description;
             }
